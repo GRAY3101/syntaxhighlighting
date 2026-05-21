@@ -141,4 +141,84 @@ class MiniJavaToken {
                 "Der Blockkommentar-Regex hat fälschlicherweise Text innerhalb des Strings getroffen.");
         }
     }
+
+    @Test
+    void TokenVorKlammer() {
+        // 1. Arrange: Input-Text mit dem Keyword gefolgt von einer Klammer
+        String text = "if(x) { }";
+
+        Pattern pattern = Pattern.compile("\\bif\\b");
+        var matcher = pattern.matcher(text);
+
+        // 2. Act
+        boolean gefunden = matcher.find();
+
+        // 3. Assert
+        assertTrue(gefunden, "Das Token sollte im Text gefunden werden.");
+        assertEquals(0, matcher.start(), "Das Token muss am Anfang stehen.");
+        assertEquals("if", matcher.group(), "Das gefundene Token muss exakt 'if' lauten.");
+    }
+
+    @Test
+    void KeinMatchInnerhalbIdentifier() {
+        // 1. Arrange: Keyword als Teil eines längeren Identifiers
+        String text = "diff";
+
+        Pattern pattern = Pattern.compile("\\bif\\b");
+        var matcher = pattern.matcher(text);
+
+        // 2. Act
+        boolean gefunden = matcher.find();
+
+        // 3. Assert: Es darf kein Match geben
+        assertFalse(gefunden, "Das Token 'if' darf nicht innerhalb von 'diff' gematcht werden.");
+    }
+
+    @Test
+    void KeywordInBlockKommentarWirdIgnoriert() {
+        // 1. Arrange: Blockkommentar mit Keyword
+        String text = "/* Hier steht return im Blockkommentar */";
+
+        Pattern blockCommentPattern = Pattern.compile("/\\*(?s).*?\\*/");
+        Pattern keywordPattern = Pattern.compile("\\breturn\\b");
+
+        var blockMatcher = blockCommentPattern.matcher(text);
+        boolean istBlock = blockMatcher.find();
+
+        assertTrue(istBlock, "Der Text sollte als Blockkommentar erkannt werden.");
+        assertEquals("/* Hier steht return im Blockkommentar */", blockMatcher.group());
+
+        var keywordMatcher = keywordPattern.matcher(text);
+        if (keywordMatcher.find()) {
+            int kwStart = keywordMatcher.start();
+            int blockStart = blockMatcher.start();
+            int blockEnd = blockMatcher.end();
+
+            assertTrue(kwStart >= blockStart && kwStart < blockEnd,
+                "Das gefundene Keyword liegt fälschlicherweise außerhalb des Blockkommentars.");
+        }
+    }
+
+    @Test
+    void EscapedQuoteImStringEnthältKeyword() {
+        // 1. Arrange: String mit escaped quotes und Keyword darin
+        String text = "\"Er sagt \\\"return\\\" hier\"";
+
+        Pattern stringPattern = Pattern.compile("\"([^\"\\\\]|\\\\.)*\"");
+        Pattern keywordPattern = Pattern.compile("\\breturn\\b");
+
+        var stringMatcher = stringPattern.matcher(text);
+        boolean istString = stringMatcher.find();
+
+        assertTrue(istString, "Der Text sollte als String erkannt werden.");
+        assertEquals(0, stringMatcher.start(), "Der String beginnt bei Index 0.");
+        assertEquals(text.length(), stringMatcher.end(), "Der String geht bis zum Ende des Textes.");
+
+        var keywordMatcher = keywordPattern.matcher(text);
+        if (keywordMatcher.find()) {
+            int kwStart = keywordMatcher.start();
+            assertTrue(kwStart > stringMatcher.start() && kwStart < stringMatcher.end(),
+                "Das Keyword 'return' muss innerhalb des Strings liegen.");
+        }
+    }
 }
