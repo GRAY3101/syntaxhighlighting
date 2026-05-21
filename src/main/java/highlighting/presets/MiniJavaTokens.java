@@ -18,16 +18,24 @@ public final class MiniJavaTokens {
   // pattern can be selected as the "highlighted" region.
   public static List<Token> defaultTokens() {
     return List.of(
-        // Javadoc (must come before block comment so it wins when both match)
-        Token.of(Pattern.compile("/\\*\\*([\\s\\S]*?)\\*/"), MiniJavaColours.JAVADOC_COMMENT_COLOUR),
-        // Block comment (don't match Javadoc /** ... */)
-        Token.of(Pattern.compile("/\\*(?!\\*)([\\s\\S]*?)\\*/"), MiniJavaColours.BLOCK_COMMENT_COLOUR),
-        // Line comment
-        Token.of(Pattern.compile("//.*"), MiniJavaColours.LINE_COMMENT_COLOUR),
-        // Keywords (a small subset)
-        Token.of(Pattern.compile("\\b(?:class|if|else|public|private|protected|return|int)\\b"), MiniJavaColours.KEYWORD_COLOUR),
-        // String literals
-        Token.of(Pattern.compile("\"([^\"\\\\]|\\\\.)*\""), MiniJavaColours.STRING_LITERAL_COLOUR)
-    );
+        // Example: string literals (students should define further tokens below)
+        Token.of(Pattern.compile("\"([^\"\\\\]|\\\\.)*\""), MiniJavaColours.STRING_LITERAL_COLOUR),
+        Token.of(Pattern.compile("\'[\\w]\'"), MiniJavaColours.CHAR_LITERAL_COLOUR),
+        Token.of(
+            Pattern.compile(
+                "\\bpackage\\b|\\bimport\\b|\\bclass\\b|\\bpublic\\b|\\bprivate\\b|"
+                    + "\\bfinal\\b|\\breturn\\b|\\bnull\\b|\\bnew\\b"),
+            MiniJavaColours.KEYWORD_COLOUR),
+        Token.of(Pattern.compile("@[a-zA-Z-]+"), MiniJavaColours.ANNOTATION_COLOUR),
+        Token.of(Pattern.compile("//.*$", Pattern.MULTILINE), MiniJavaColours.LINE_COMMENT_COLOUR),
+        Token.of(
+            Pattern.compile("/\\*(?s).*?\\*/", Pattern.MULTILINE),
+            MiniJavaColours.BLOCK_COMMENT_COLOUR),
+        Token.of(
+            Pattern.compile("/\\*\\*[\\w]+\\*/", Pattern.MULTILINE),
+            MiniJavaColours.JAVADOC_COMMENT_COLOUR)
+        // TODO: Define additional tokens for MiniJava, e.g. character literals, keywords,
+        // annotations, comments, identifiers, numbers, operators, etc.
+        );
   }
 }
