@@ -20,20 +20,21 @@ public final class MiniJavaTokens {
     return List.of(
         // Example: string literals (students should define further tokens below)
         Token.of(Pattern.compile("\"([^\"\\\\]|\\\\.)*\""), MiniJavaColours.STRING_LITERAL_COLOUR),
+        Token.of(
+            Pattern.compile("/\\*\\*(?s).*?\\*/", Pattern.MULTILINE),
+            MiniJavaColours.JAVADOC_COMMENT_COLOUR),
+        Token.of(
+            Pattern.compile("/\\*(?s).*?\\*/", Pattern.MULTILINE),
+            MiniJavaColours.BLOCK_COMMENT_COLOUR),
+        Token.of(Pattern.compile("//.*$", Pattern.MULTILINE), MiniJavaColours.LINE_COMMENT_COLOUR),
         Token.of(Pattern.compile("\'[\\w]\'"), MiniJavaColours.CHAR_LITERAL_COLOUR),
         Token.of(
             Pattern.compile(
                 "\\bpackage\\b|\\bimport\\b|\\bclass\\b|\\bpublic\\b|\\bprivate\\b|"
-                    + "\\bfinal\\b|\\breturn\\b|\\bnull\\b|\\bnew\\b"),
+                    + "\\bfinal\\b|\\breturn\\b|\\bnull\\b|\\bnew\\b|\\bint\\b"),
             MiniJavaColours.KEYWORD_COLOUR),
-        Token.of(Pattern.compile("@[a-zA-Z-]+"), MiniJavaColours.ANNOTATION_COLOUR),
-        Token.of(Pattern.compile("//.*$", Pattern.MULTILINE), MiniJavaColours.LINE_COMMENT_COLOUR),
-        Token.of(
-            Pattern.compile("/\\*(?s).*?\\*/", Pattern.MULTILINE),
-            MiniJavaColours.BLOCK_COMMENT_COLOUR),
-        Token.of(
-            Pattern.compile("/\\*\\*[\\w]+\\*/", Pattern.MULTILINE),
-            MiniJavaColours.JAVADOC_COMMENT_COLOUR)
+        Token.of(Pattern.compile("@[a-zA-Z-]+"), MiniJavaColours.ANNOTATION_COLOUR)
+
         // TODO: Define additional tokens for MiniJava, e.g. character literals, keywords,
         // annotations, comments, identifiers, numbers, operators, etc.
         );
