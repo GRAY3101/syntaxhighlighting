@@ -35,8 +35,6 @@ public final class MiniJavaTokens {
             MiniJavaColours.KEYWORD_COLOUR),
         Token.of(Pattern.compile("@[a-zA-Z-]+"), MiniJavaColours.ANNOTATION_COLOUR)
 
-
-
         // TODO: Define additional tokens for MiniJava, e.g. character literals, keywords,
         // annotations, comments, identifiers, numbers, operators, etc.
         );

@@ -1,12 +1,11 @@
 package highlighting.regex;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import highlighting.core.HighlightRegion;
 import highlighting.presets.MiniJavaColours;
-import org.junit.jupiter.api.Test;
-
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 public class RegexHighlighterTest {
 
@@ -16,9 +15,8 @@ public class RegexHighlighterTest {
   void simpleNonOverlapping() {
     String text = "String x = \"hello\";";
     var regions = highlighter.computeRegions(text);
-    var expected = List.of(
-        new HighlightRegion(11, text.length()-1, MiniJavaColours.STRING_LITERAL_COLOUR)
-    );
+    var expected =
+        List.of(new HighlightRegion(11, text.length() - 1, MiniJavaColours.STRING_LITERAL_COLOUR));
     assertEquals(expected, regions);
   }
 
@@ -26,10 +24,10 @@ public class RegexHighlighterTest {
   void keywordInsideComment() {
     String text = "/* int */ int";
     var regions = highlighter.computeRegions(text);
-    var expected = List.of(
-        new HighlightRegion(0, 9, MiniJavaColours.BLOCK_COMMENT_COLOUR),
-        new HighlightRegion(10, text.length(), MiniJavaColours.KEYWORD_COLOUR)
-    );
+    var expected =
+        List.of(
+            new HighlightRegion(0, 9, MiniJavaColours.BLOCK_COMMENT_COLOUR),
+            new HighlightRegion(10, text.length(), MiniJavaColours.KEYWORD_COLOUR));
     assertEquals(expected, regions);
   }
 
@@ -49,10 +47,10 @@ public class RegexHighlighterTest {
   void adjacentRegionsKept() {
     String text = "\"a\"\"b\""; // two adjacent string literals
     var regions = highlighter.computeRegions(text);
-    var expected = List.of(
-        new HighlightRegion(0, 3, MiniJavaColours.STRING_LITERAL_COLOUR),
-        new HighlightRegion(3, 6, MiniJavaColours.STRING_LITERAL_COLOUR)
-    );
+    var expected =
+        List.of(
+            new HighlightRegion(0, 3, MiniJavaColours.STRING_LITERAL_COLOUR),
+            new HighlightRegion(3, 6, MiniJavaColours.STRING_LITERAL_COLOUR));
     assertEquals(expected, regions);
   }
 

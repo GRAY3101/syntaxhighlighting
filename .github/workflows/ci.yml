@@ -48,6 +48,5 @@ jobs:
                   java-version: '25'
                   distribution: 'temurin'
             - run: chmod +x gradlew
-            - run: ./gradew spotlessApply
             - run: ./gradlew spotlessCheck -Djava.net.preferIPv4Stack=true
             - run:  ./gradlew spotlessCheck
