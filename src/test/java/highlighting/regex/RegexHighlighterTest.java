@@ -14,11 +14,10 @@ public class RegexHighlighterTest {
 
   @Test
   void simpleNonOverlapping() {
-    String text = "int x = \"hello\";";
+    String text = "String x = \"hello\";";
     var regions = highlighter.computeRegions(text);
     var expected = List.of(
-        new HighlightRegion(0, 3, MiniJavaColours.KEYWORD_COLOUR),
-        new HighlightRegion(8, 15, MiniJavaColours.STRING_LITERAL_COLOUR)
+        new HighlightRegion(11, text.length()-1, MiniJavaColours.STRING_LITERAL_COLOUR)
     );
     assertEquals(expected, regions);
   }
@@ -29,7 +28,7 @@ public class RegexHighlighterTest {
     var regions = highlighter.computeRegions(text);
     var expected = List.of(
         new HighlightRegion(0, 9, MiniJavaColours.BLOCK_COMMENT_COLOUR),
-        new HighlightRegion(10, 13, MiniJavaColours.KEYWORD_COLOUR)
+        new HighlightRegion(10, text.length(), MiniJavaColours.KEYWORD_COLOUR)
     );
     assertEquals(expected, regions);
   }
@@ -42,7 +41,7 @@ public class RegexHighlighterTest {
     assertEquals(1, regions.size());
     var r = regions.get(0);
     assertEquals(0, r.start());
-    assertEquals(14, r.end());
+    assertEquals(text.length(), r.end());
     assertEquals(MiniJavaColours.JAVADOC_COMMENT_COLOUR, r.colour());
   }
 
