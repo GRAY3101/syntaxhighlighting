@@ -18,11 +18,16 @@ public final class MiniJavaTokens {
   // pattern can be selected as the "highlighted" region.
   public static List<Token> defaultTokens() {
     return List.of(
-        // Example: string literals (students should define further tokens below)
+        // Javadoc (must come before block comment so it wins when both match)
+        Token.of(Pattern.compile("/\\*\\*([\\s\\S]*?)\\*/"), MiniJavaColours.JAVADOC_COMMENT_COLOUR),
+        // Block comment (don't match Javadoc /** ... */)
+        Token.of(Pattern.compile("/\\*(?!\\*)([\\s\\S]*?)\\*/"), MiniJavaColours.BLOCK_COMMENT_COLOUR),
+        // Line comment
+        Token.of(Pattern.compile("//.*"), MiniJavaColours.LINE_COMMENT_COLOUR),
+        // Keywords (a small subset)
+        Token.of(Pattern.compile("\\b(?:class|if|else|public|private|protected|return|int)\\b"), MiniJavaColours.KEYWORD_COLOUR),
+        // String literals
         Token.of(Pattern.compile("\"([^\"\\\\]|\\\\.)*\""), MiniJavaColours.STRING_LITERAL_COLOUR)
-
-        // TODO: Define additional tokens for MiniJava, e.g. character literals, keywords,
-        // annotations, comments, identifiers, numbers, operators, etc.
-        );
+    );
   }
 }

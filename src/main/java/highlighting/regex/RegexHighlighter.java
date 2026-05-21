@@ -2,6 +2,9 @@ package highlighting.regex;
 
 import highlighting.core.HighlightRegion;
 import highlighting.core.SyntaxHighlighter;
+import highlighting.presets.MiniJavaTokens;
+
+import java.util.ArrayList;
 import java.util.List;
 
 // TODO: Implement a simple regex-based highlighting strategy. Unlike the scanning approach, this
@@ -13,11 +16,14 @@ import java.util.List;
 // the naive regex-based strategy.
 public class RegexHighlighter extends SyntaxHighlighter {
 
-  // TODO: For each token, find all matches of its pattern in the input text, convert them into
-  // {@code HighlightRegion}s, and combine all of these regions into a single list.
+  // For each token, find all matches and combine into a single list.
   @Override
   public List<HighlightRegion> collectMatches(String text) {
-    throw new UnsupportedOperationException("not implemented yet");
+    var matches = new ArrayList<HighlightRegion>();
+    for (Token t : MiniJavaTokens.defaultTokens()) {
+      matches.addAll(t.test(text));
+    }
+    return matches;
   }
 
   // TODO: Resolve overlapping regions. Assume that {@code regions} has been normalised and sorted.
@@ -26,6 +32,19 @@ public class RegexHighlighter extends SyntaxHighlighter {
   // position are preferred because of the sorting in {@code normalize}.
   @Override
   public List<HighlightRegion> resolveConflicts(List<HighlightRegion> regions) {
-    throw new UnsupportedOperationException("not implemented yet");
+    List<HighlightRegion> resolved = new ArrayList<>();
+    for (HighlightRegion r : regions) {
+      if (resolved.isEmpty()) {
+        resolved.add(r);
+        continue;
+      }
+      HighlightRegion last = resolved.get(resolved.size() - 1);
+      // if r starts before last ends, it's overlapping and should be discarded
+      if (r.start() < last.end()) {
+        continue;
+      }
+      resolved.add(r);
+    }
+    return resolved;
   }
 }
