@@ -26,14 +26,15 @@ public final class MiniJavaTokens {
                 "\\bpackage\\b|\\bimport\\b|\\bclass\\b|\\bpublic\\b|\\bprivate\\b|"
                     + "\\bfinal\\b|\\breturn\\b|\\bnull\\b|\\bnew\\b"),
             MiniJavaColours.KEYWORD_COLOUR),
-        Token.of(Pattern.compile("@[a-zA-Z-]+"), MiniJavaColours.ANNOTATION_COLOUR),
+        Token.of(Pattern.compile("@[A-Za-z_][A-Za-z0-9_]*(\\.[A-Za-z_][A-Za-z0-9_]*)*"), MiniJavaColours.ANNOTATION_COLOUR),
         Token.of(Pattern.compile("//.*$", Pattern.MULTILINE), MiniJavaColours.LINE_COMMENT_COLOUR),
         Token.of(
-            Pattern.compile("/\\*(?s).*?\\*/", Pattern.MULTILINE),
-            MiniJavaColours.BLOCK_COMMENT_COLOUR),
+            Pattern.compile("/\\*\\*(?s).*?\\*/", Pattern.MULTILINE),
+            MiniJavaColours.JAVADOC_COMMENT_COLOUR),
         Token.of(
-            Pattern.compile("/\\*\\*[\\w]+\\*/", Pattern.MULTILINE),
-            MiniJavaColours.JAVADOC_COMMENT_COLOUR)
+            Pattern.compile("/\\*(?s).*?\\*/", Pattern.MULTILINE),
+            MiniJavaColours.BLOCK_COMMENT_COLOUR)
+
         // TODO: Define additional tokens for MiniJava, e.g. character literals, keywords,
         // annotations, comments, identifiers, numbers, operators, etc.
         );
