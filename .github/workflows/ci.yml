@@ -19,7 +19,7 @@ jobs:
                   distribution: 'temurin'
             - uses: gradle/actions/wrapper-validation@v6
             - run: chmod +x gradlew
-            - run : ./gradlew clean
+            - run: ./gradlew clean
             - run: ./gradlew compileJava
 
     job2:
@@ -49,4 +49,3 @@ jobs:
                   distribution: 'temurin'
             - run: chmod +x gradlew
             - run: ./gradlew spotlessCheck -Djava.net.preferIPv4Stack=true
-            - run:  ./gradlew spotlessCheck
