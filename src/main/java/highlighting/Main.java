@@ -1,8 +1,11 @@
 package highlighting;
 
+import highlighting.antlr.AntlrTokenCollector;
 import highlighting.antlr.MiniJavaLexer;
 import highlighting.antlr.MiniJavaParser;
 import highlighting.antlr.PrettyPrinterVisitor;
+import highlighting.presets.Texts;
+import highlighting.ui.EditorUI;
 import java.util.Scanner;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -26,7 +29,7 @@ public class Main {
   };
 
   public static void main(String... args) {
-  
+
     try (var scanner = new Scanner(System.in)) {
       int indentWidth = readIndentWidth(scanner);
 
@@ -35,6 +38,8 @@ public class Main {
         System.out.println("=== " + EXAMPLE_NAMES[i] + " ===");
         System.out.println(prettyPrint(EXAMPLES[i], indentWidth));
       }
+      // Wird erst angezeigt nach Konsolenausgabe
+      EditorUI.show(Texts.START_TEXT, new AntlrTokenCollector());
     }
   }
 
